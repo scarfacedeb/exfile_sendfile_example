@@ -23,8 +23,8 @@ defmodule ExfileSendfile.MixProject do
   defp deps do
     [
       {:exfile, "~> 0.3"},
-      {:plug, "~> 1.8"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug, "1.6.4"},
+      {:cowboy, "~> 1.0"}
     ]
   end
 end
