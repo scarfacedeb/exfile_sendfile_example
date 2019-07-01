@@ -24,7 +24,9 @@ defmodule ExfileSendfile.MixProject do
     [
       {:exfile, "~> 0.3"},
       {:plug, "~> 1.8"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:briefly, "~> 0.3"},
+      {:tracer, "~> 0.1"}
     ]
   end
 end
