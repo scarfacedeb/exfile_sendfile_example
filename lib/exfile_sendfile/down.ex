@@ -1,37 +1,36 @@
 defmodule ExfileSendfile.Down do
   use GenServer
+  require Logger
 
   def start_link(_) do
-    GenServer.start_link(__MODULE__, :ok, [name: __MODULE__])
+    GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
   def init(_) do
-    IO.inspect "init"
     {:ok, %{}}
   end
 
-  def monitor(pid) do
-    GenServer.call(__MODULE__, {:monitor, pid})
+  def monitor(target, path \\ nil) do
+    GenServer.call(__MODULE__, {:monitor, target, path})
   end
 
-  def monitor(pid, path) do
-    GenServer.call(__MODULE__, {:monitor, pid, path})
-  end
-
-  def handle_call({:monitor, pid}, _from, state) do
+  def handle_call({:monitor, {type, pid}, path}, _from, state) do
     ref = :erlang.monitor(:process, pid)
-    {:reply, ref, state}
-  end
-
-  def handle_call({:monitor, pid, path}, _from, state) do
-    ref = :erlang.monitor(:process, pid)
-    {:reply, ref, Map.put(state, pid, path)}
+    {:reply, ref, Map.put(state, pid, {type, path})}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, _reason} = msg, state) do
-    IO.inspect(msg, label: "DOWN")
-    {path, new_state} = Map.pop(state, pid)
-    IO.inspect({path, File.exists?(path)}, label: "Exists?")
+    {{type, path}, new_state} = Map.pop(state, pid)
+
+    IO.inspect(msg, label: type)
+    log_file(path)
+
     {:noreply, new_state}
+  end
+
+  def log_file(path) do
+    if path do
+      path |> File.exists?() |> IO.inspect(label: "Exists?")
+    end
   end
 end
