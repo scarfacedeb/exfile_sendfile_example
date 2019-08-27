@@ -13,9 +13,9 @@ defmodule ExfileSendfile.Router do
   end
 
   # Test exfile random implementation
-  get "/exfile" do
+  get "/exfile/:bytes" do
     path = Exfile.Tempfile.random_file!("send")
-    File.write!(path, gen_data())
+    File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
     log_file(path)
@@ -24,9 +24,9 @@ defmodule ExfileSendfile.Router do
   end
 
   # Test briefly implementation
-  get "/briefly" do
+  get "/briefly/:bytes" do
     {:ok, path} = Briefly.create
-    File.write!(path, gen_data())
+    File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
     log_file(path)

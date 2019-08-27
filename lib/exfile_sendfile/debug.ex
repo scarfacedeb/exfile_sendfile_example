@@ -1,10 +1,9 @@
 defmodule ExfileSendfile.Debug do
   alias ExfileSendfile.Down
 
-  @data_size 30_000_000
-
-  def gen_data do
-    data = @data_size |> :crypto.strong_rand_bytes() |> Base.encode32()
+  def gen_data(bytes) do
+    size = bytes |> String.to_integer()
+    data =  size |> :crypto.strong_rand_bytes() |> Base.encode64() |> binary_part(0, size)
     data <> "\n\n<<END>>"
   end
 
