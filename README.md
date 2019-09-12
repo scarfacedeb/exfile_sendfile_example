@@ -44,14 +44,14 @@ To test the fixed version of stripped down implementation:
 curl --limit-rate 500 "localhost:4422/fixed/5000" | tail -c 5
 ```
 
-It's the only version that should consistently response without any errors.
+It's the only version that should consistently return the response without any errors.
 
 
 ## Results
 
 ### First run
 
-You should get a similar results after running any of the tests (except for the fixed one).
+You should get similar results after running any of the tests (except for the fixed one).
 
 Curl will report that it haven't received any body:
 
