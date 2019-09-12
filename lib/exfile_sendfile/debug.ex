@@ -1,5 +1,6 @@
 defmodule ExfileSendfile.Debug do
   alias ExfileSendfile.Down
+  require Logger
 
   def gen_data(bytes) when is_binary(bytes) do
     bytes |> String.to_integer() |> gen_data()
@@ -12,8 +13,8 @@ defmodule ExfileSendfile.Debug do
   def monitor_all(%{adapter: adapter}, path \\ nil) do
     {Plug.Cowboy.Conn, %{pid: connection_pid}} = adapter
 
-    IO.inspect(self(), label: "self")
-    IO.inspect(connection_pid, label: "connection_pid")
+    Logger.info(inspect(self()), label: "self")
+    Logger.info(inspect(connection_pid), label: "connection_pid")
 
     Down.monitor({:request, self()}, path)
     Down.monitor({:connection, connection_pid}, path)
@@ -24,13 +25,8 @@ defmodule ExfileSendfile.Debug do
     size
   end
 
-  def log_file(path) do
-    IO.inspect(path, label: "path")
-    IO.inspect(filesize(path), label: "size")
-  end
-
   def log_request_end(conn) do
-    IO.puts(">> End request")
+    Logger.info(">> End request")
     conn
   end
 end

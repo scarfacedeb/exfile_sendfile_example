@@ -22,7 +22,7 @@ defmodule ExfileSendfile.Down do
   def handle_info({:DOWN, _ref, :process, pid, _reason} = msg, state) do
     {{type, path}, new_state} = Map.pop(state, pid)
 
-    IO.inspect(msg, label: type)
+    Logger.info(inspect(msg), label: type)
     log_file(path)
 
     {:noreply, new_state}
@@ -30,7 +30,7 @@ defmodule ExfileSendfile.Down do
 
   def log_file(path) do
     if path do
-      path |> File.exists?() |> IO.inspect(label: "Exists?")
+      path |> File.exists?() |> inspect() |> Logger.info(label: "File exists?")
     end
   end
 end

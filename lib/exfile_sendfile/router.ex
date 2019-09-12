@@ -19,7 +19,6 @@ defmodule ExfileSendfile.Router do
     File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
-    log_file(path)
 
     conn |> send_file(200, path) |> log_request_end()
   end
@@ -30,7 +29,6 @@ defmodule ExfileSendfile.Router do
     File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
-    log_file(path)
 
     conn |> send_file(200, path) |> log_request_end()
   end
@@ -41,7 +39,6 @@ defmodule ExfileSendfile.Router do
     File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
-    log_file(path)
 
     conn |> send_file(200, path) |> log_request_end()
   end
@@ -52,7 +49,6 @@ defmodule ExfileSendfile.Router do
     File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
-    log_file(path)
 
     conn |> send_file(200, path) |> log_request_end()
   end
