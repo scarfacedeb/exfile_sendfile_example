@@ -1,10 +1,12 @@
 defmodule ExfileSendfile.Debug do
   alias ExfileSendfile.Down
 
+  def gen_data(bytes) when is_binary(bytes) do
+    bytes |> String.to_integer() |> gen_data()
+  end
+
   def gen_data(bytes) do
-    size = bytes |> String.to_integer()
-    data =  size |> :crypto.strong_rand_bytes() |> Base.encode64() |> binary_part(0, size)
-    data <> "\n\n<<END>>"
+    bytes |> :crypto.strong_rand_bytes() |> Base.encode64() |> binary_part(0, bytes)
   end
 
   def monitor_all(%{adapter: adapter}, path \\ nil) do
