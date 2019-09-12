@@ -7,12 +7,13 @@ defmodule ExfileSendfile.SocketTest do
 
   @filename "socket_test.txt"
   @tcp_sendfile_req 66_167_597
+  @port 4433
 
-  def run do
+  def run(port \\ @port) do
     File.write!(@filename, gen_data(10000))
     {:ok, file} = :file.open(@filename, [:raw, :read, :binary])
 
-    {:ok, socket} = :gen_tcp.listen(0, port: 4433)
+    {:ok, socket} = :gen_tcp.listen(0, port: port)
     {:ok, lsocket} = :gen_tcp.accept(socket)
 
     fd = :prim_file.get_handle(file)
@@ -20,8 +21,8 @@ defmodule ExfileSendfile.SocketTest do
     [1] = :erlang.port_control(lsocket, @tcp_sendfile_req, args)
   end
 
-  def run_and_exit do
-    run()
+  def run_and_exit(port \\ @port) do
+    run(port)
     System.stop(0)
   end
 end
