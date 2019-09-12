@@ -10,7 +10,7 @@ defmodule ExfileSendfile.Router do
   # Inspect when request and connection processes are going down
   get "/monitor" do
     monitor_all(conn)
-    conn |> send_resp(200, "BODY") |> log_request_end()
+    conn |> send_resp(200, gen_data(1000)) |> log_request_end()
   end
 
   # Test exfile random implementation
@@ -35,7 +35,7 @@ defmodule ExfileSendfile.Router do
 
   # Test stripped down version
   get "/custom/:bytes" do
-    {:ok, path} = Temp.create(conn)
+    {:ok, path} = Temp.create(self())
     File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
@@ -45,7 +45,7 @@ defmodule ExfileSendfile.Router do
 
   # Fixed version
   get "/fixed/:bytes" do
-    {:ok, path} = Temp.create(self())
+    {:ok, path} = Temp.create(conn)
     File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
