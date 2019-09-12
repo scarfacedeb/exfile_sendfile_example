@@ -22,7 +22,7 @@ defmodule ExfileSendfile.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:exfile, "~> 0.3"},
+      {:exfile, "~> 0.3", github: "scarfacedeb/exfile", branch: "monitor_pid"},
       {:plug, "~> 1.8"},
       {:plug_cowboy, "~> 2.0"},
       {:briefly, "~> 0.3"},

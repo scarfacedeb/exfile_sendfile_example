@@ -15,7 +15,7 @@ defmodule ExfileSendfile.Router do
 
   # Test exfile random implementation
   get "/exfile/:bytes" do
-    path = Exfile.Tempfile.random_file!("send")
+    path = Exfile.Tempfile.random_file!("send", connection_pid(conn))
     File.write!(path, gen_data(bytes))
 
     monitor_all(conn, path)
@@ -51,5 +51,15 @@ defmodule ExfileSendfile.Router do
     monitor_all(conn, path)
 
     conn |> send_file(200, path) |> log_request_end()
+  end
+
+  defp connection_pid(%Plug.Conn{adapter: adapter}) do
+    case adapter do
+      {Plug.Cowboy.Conn, %{pid: connection_pid}} ->
+        connection_pid
+
+      _ ->
+        self()
+    end
   end
 end
