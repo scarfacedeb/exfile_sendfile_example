@@ -11,13 +11,17 @@ defmodule ExfileSendfile.Debug do
   end
 
   def monitor_all(%{adapter: adapter}, path \\ nil) do
-    {Plug.Cowboy.Conn, %{pid: connection_pid}} = adapter
+    connection_pid =
+      case adapter do
+        {Plug.Cowboy.Conn, %{pid: pid}} -> pid
+        _ -> self()
+      end
 
     Logger.info(inspect(self()), label: "self")
-    Logger.info(inspect(connection_pid), label: "connection_pid")
+    # Logger.info(inspect(connection_pid), label: "connection_pid")
 
     Down.monitor({:request, self()}, path)
-    Down.monitor({:connection, connection_pid}, path)
+    # Down.monitor({:connection, connection_pid}, path)
   end
 
   def filesize(path) do

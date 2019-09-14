@@ -24,7 +24,7 @@ defmodule ExfileSendfile.MixProject do
     [
       {:exfile, "~> 0.3", github: "scarfacedeb/exfile", branch: "monitor_pid"},
       {:plug, "~> 1.8"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 1.0"},
       {:briefly, "~> 0.3"},
       {:tracer, "~> 0.1"}
     ]
